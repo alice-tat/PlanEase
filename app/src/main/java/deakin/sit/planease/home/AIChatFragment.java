@@ -63,7 +63,7 @@ public class AIChatFragment extends Fragment {
 
         // Init data
         messageList = new ArrayList<Message>();
-        messageList.add(new Message("Welcome user", "AI", true)); // Message(content, username, isAIgenerated)
+        messageList.add(new Message("Welcome user", "AI", true, "", "")); // Message(content, username, isAIgenerated)
         messageAdapter = new MessageAdapter(messageList, this);
 
         // Setup view
@@ -84,6 +84,12 @@ public class AIChatFragment extends Fragment {
         return view;
     }
 
+    private void resetInputFields() {
+        inputGoal.setText("");
+        targetDate.setText("");
+        chatInputBox.setText("");
+    }
+
     private void handleSendButton(View view) {
         String goalName = inputGoal.getText().toString();
         String goalDate = targetDate.getText().toString();
@@ -93,13 +99,19 @@ public class AIChatFragment extends Fragment {
             Toast.makeText(getContext(), "Please enter all required fields", Toast.LENGTH_SHORT).show();
             return;
         }
-        messageAdapter.addNewMessage(new Message(message, currentUser.getName(), false));
+        messageAdapter.addNewMessage(new Message(message, currentUser.getName(), false, goalName, goalDate));
 
         // Show ProgressBar and clear previous response
         progressBar.setVisibility(View.VISIBLE);
-        chatInputBox.setText("");
+        resetInputFields();
 
         sendMessageToServer(goalName, goalDate, message);
+    }
+
+    public void changeMessage(Message message) {
+        inputGoal.setText(message.getSelectedGoalName());
+        targetDate.setText(message.getSelectedGoalDate());
+        chatInputBox.setText(message.getContent());
     }
 
     public void generateTaskBasedOnMessage(Message message) {
@@ -139,7 +151,8 @@ public class AIChatFragment extends Fragment {
                         try {
                             // Send result
                             ((HomeActivity) getActivity()).showToastMessage(response.getString("message"));
-                            ((HomeActivity) getActivity()).setCurrentFragment(new TaskListFragment());
+//                            ((HomeActivity) getActivity()).setCurrentFragment(new TaskListFragment());
+                            ((HomeActivity) getActivity()).bottomNavigationView.setSelectedItemId(HomeActivity.ID_MENU_NATIVATION_TASK_LIST);
                         } catch (Exception e) {
                             Log.e(TAG, "Error parsing response: " + e.getMessage(), e);
                             ((HomeActivity) getActivity()).showToastMessage("Error when processing response: " + e.getMessage());
@@ -183,33 +196,6 @@ public class AIChatFragment extends Fragment {
                                     response.getJSONArray("task")
                             );
                             messageAdapter.addNewMessage(aiMessage);
-
-                            // Process each task
-//                            for (int i = 0; i < taskArray.length(); i++) {
-//                                JSONObject taskObject = taskArray.getJSONObject(i);
-//
-//                                Task task = new Task()
-//
-//                                String question = quizQuestion.getString("question");
-//                                JSONArray optionsArray = quizQuestion.getJSONArray("options");
-//                                int correctAnswer = Integer.parseInt(quizQuestion.getString("correct_answer")) - 1;
-//
-//                                String questionTitle = "Question " + (i+1);
-//                                String[] choiceList = new String[optionsArray.length()];
-//                                for(int k = 0; k < optionsArray.length(); k++){
-//                                    choiceList[k] = optionsArray.getString(k);
-//                                }
-//                                Log.d("INFO-QUESTION", question);
-//                                Log.d("INFO-CHOICES", Arrays.toString(choiceList));
-//                                Log.d("INFO-ANSWER", String.valueOf(correctAnswer));
-//
-//                                // Add to the list
-//                                newTask.addQuestion(new StudentTaskQuestion(
-//                                        questionTitle, question, choiceList, correctAnswer
-//                                ));
-//                            }
-//                            addNewTaskToServer(newTask);
-
 
                             ((HomeActivity) getActivity()).showToastMessage(response.getString("message"));
 

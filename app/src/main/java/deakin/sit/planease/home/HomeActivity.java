@@ -1,15 +1,10 @@
 package deakin.sit.planease.home;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -20,15 +15,15 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import deakin.sit.planease.GoalFormActivity;
-import deakin.sit.planease.LoginActivity;
 import deakin.sit.planease.R;
-import deakin.sit.planease.TaskFormActivity;
-import deakin.sit.planease.dto.Goal;
-import deakin.sit.planease.dto.Task;
 import deakin.sit.planease.dto.User;
 
 public class HomeActivity extends AppCompatActivity {
+    public static final int ID_MENU_NATIVATION_TASK_LIST = R.id.navigationTaskList;
+    public static final int ID_MENU_NATIVATION_GOAL_LIST = R.id.navigationGoalList;
+    public static final int ID_MENU_NATIVATION_AI_CHAT = R.id.navigationAIChat;
+    public static final int ID_MENU_NATIVATION_ACCOUNT = R.id.navigationAccount;
+
     // Views
     FragmentContainerView fragmentContainerView;
     BottomNavigationView bottomNavigationView;
@@ -39,7 +34,6 @@ public class HomeActivity extends AppCompatActivity {
     // User data
     User currentUser;
 
-//    ActivityResultLauncher<Intent> activityResultLauncher;
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +49,6 @@ public class HomeActivity extends AppCompatActivity {
         // Get intent data
         currentUser = (User) getIntent().getSerializableExtra("User");
 
-        // Get ids
-        int idMenuNavigationTaskList = R.id.navigationTaskList;
-        int idMenuNavigationGoalList = R.id.navigationGoalList;
-        int idMenuNavigationAIChat = R.id.navigationAIChat;
-        int idMenuNavigationAccount = R.id.navigationAccount;
-
         // Setup views
         fragmentContainerView = findViewById(R.id.fragmentContainerView);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -72,27 +60,21 @@ public class HomeActivity extends AppCompatActivity {
         // Config navigation bar
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
-            if (itemId == idMenuNavigationTaskList) {
+            if (itemId == ID_MENU_NATIVATION_TASK_LIST) {
                 setCurrentFragment(new TaskListFragment());
                 return true;
-            } else if (itemId == idMenuNavigationGoalList) {
+            } else if (itemId == ID_MENU_NATIVATION_GOAL_LIST) {
                 setCurrentFragment(new GoalListFragment());
                 return true;
-            } else if (itemId == idMenuNavigationAIChat) {
+            } else if (itemId == ID_MENU_NATIVATION_AI_CHAT) {
                 setCurrentFragment(new AIChatFragment());
                 return true;
-            } else if (itemId == idMenuNavigationAccount) {
+            } else if (itemId == ID_MENU_NATIVATION_ACCOUNT) {
                 setCurrentFragment(new AccountFragment());
                 return true;
             }
             return false;
         });
-
-        // Config register launcher
-//        activityResultLauncher = registerForActivityResult(
-//                new ActivityResultContracts.StartActivityForResult(),
-//                this::handleResultFromActivity
-//        );
     }
 
     public void setCurrentFragment(Fragment fragment) {
@@ -100,30 +82,6 @@ public class HomeActivity extends AppCompatActivity {
                         .replace(R.id.fragmentContainerView, fragment)
                         .commit();
     }
-
-//    public void startFormActivity(Task task) {
-//        Intent intent = new Intent(HomeActivity.this, TaskFormActivity.class);
-//        intent.putExtra("User", currentUser);
-//        intent.putExtra("Task", task);
-//        startActivity(intent);
-//    }
-//
-//    public void startFormActivity(Goal goal) {
-//        Intent intent = new Intent(HomeActivity.this, GoalFormActivity.class);
-//        intent.putExtra("User", currentUser);
-//        intent.putExtra("Goal", goal);
-//        startActivity(intent);
-//    }
-//
-//    private void handleResultFromActivity(ActivityResult result) {
-//        String returnedMessage = "";
-//        if (result.getResultCode() == RESULT_OK) {
-//            returnedMessage = result.getData()!=null ? result.getData().getStringExtra("Message") : "Result OK";
-//        } else {
-//            returnedMessage = result.getData()!=null ? result.getData().getStringExtra("Message") : "Result Cancelled";
-//        }
-//        Toast.makeText(this, returnedMessage, Toast.LENGTH_SHORT).show();
-//    }
 
     public void showToastMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

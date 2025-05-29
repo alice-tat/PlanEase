@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 
+import deakin.sit.planease.GoalFormActivity;
 import deakin.sit.planease.R;
 import deakin.sit.planease.dto.Task;
 import deakin.sit.planease.home.HomeActivity;
@@ -23,12 +24,21 @@ import deakin.sit.planease.home.TaskListFragment;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     List<Task> taskList;
     TaskListFragment fragment;
+    GoalFormActivity activity;
     boolean isEditable;
 
     public TaskAdapter(List<Task> taskList, TaskListFragment fragment) {
         this.taskList = taskList;
         this.fragment = fragment;
+        this.activity = null;
         isEditable = false;
+    }
+
+    public TaskAdapter(List<Task> taskList, GoalFormActivity activity) {
+        this.taskList = taskList;
+        this.fragment = null;
+        this.activity = activity;
+        isEditable = true;
     }
 
     @NonNull
@@ -46,18 +56,30 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         holder.taskDate.setText(task.getDate());
 
         holder.taskEditButton.setOnClickListener(view -> {
-            fragment.handleEditTaskButton(task);
+            if (fragment!=null) {
+                fragment.handleEditTaskButton(task);
+            }
+            if (activity!=null) {
+                activity.handleEditTaskButton(task);
+            }
         });
         holder.taskDeleteButton.setOnClickListener(view -> {
-            fragment.deleteTaskFromServer(task.getId());
+            if (fragment!=null) {
+                fragment.deleteTaskFromServer(task.getId());
+            }
+            if (activity!=null) {
+                activity.deleteTaskFromServer(task.getId());
+            }
         });
 
         if (isEditable) {
             holder.taskEditButton.setVisibility(View.VISIBLE);
             holder.taskDeleteButton.setVisibility(View.VISIBLE);
+            holder.markFinishButton.setVisibility(View.GONE);
         } else {
             holder.taskEditButton.setVisibility(View.GONE);
             holder.taskDeleteButton.setVisibility(View.GONE);
+            holder.markFinishButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -92,6 +114,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView taskDate, taskName;
         ImageButton taskEditButton, taskDeleteButton;
+        Button markFinishButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -101,6 +124,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
             taskEditButton = itemView.findViewById(R.id.taskEditButton);
             taskDeleteButton = itemView.findViewById(R.id.taskDeleteButton);
+
+            markFinishButton = itemView.findViewById(R.id.markFinishButton);
         }
     }
 }

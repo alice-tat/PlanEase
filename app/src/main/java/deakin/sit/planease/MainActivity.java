@@ -31,7 +31,7 @@ import org.json.JSONObject;
 import deakin.sit.planease.dto.User;
 import deakin.sit.planease.home.HomeActivity;
 
-public class LoginActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = "INFO:LoginActivity";
     EditText inputEmail, inputPassword;
     Button loginButton;
@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -85,13 +85,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void handleRegisterButton(View view) {
-        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+        Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
         activityResultLauncher.launch(intent);
     }
 
     // Activity handling
     private void startHomeActivity(User currentUser) {
-        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
         intent.putExtra("User", currentUser);
         activityResultLauncher.launch(intent);
     }
@@ -142,7 +142,7 @@ public class LoginActivity extends AppCompatActivity {
                             startHomeActivity(currentUser);
                         } catch (Exception e) {
                             Log.e(TAG, "Error parsing response: " + e.getMessage(), e);
-                            Toast.makeText(LoginActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -151,7 +151,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         String errorMsg = error.networkResponse != null ? "HTTP " + error.networkResponse.statusCode + ": " + new String(error.networkResponse.data) : error.getMessage() != null ? error.getMessage() : "Unknown error";
                         Log.e(TAG, "Error saving note: " + errorMsg, error);
-                        Toast.makeText(LoginActivity.this, "Error saving note: " + errorMsg, Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "Error saving note: " + errorMsg, Toast.LENGTH_LONG).show();
                     }
                 });
         request.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));

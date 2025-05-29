@@ -11,10 +11,12 @@ public class Message {
     private String selectedGoalDate;
     private JSONArray generatedTaskArray;
 
-    public Message(String content, String username, boolean isAIgenerated) {
+    public Message(String content, String username, boolean isAIgenerated, String selectedGoalName, String selectedGoalDate) {
         this.content = content;
         this.username = username;
         this.isAIgenerated = isAIgenerated;
+        this.selectedGoalName = selectedGoalName;
+        this.selectedGoalDate = selectedGoalDate;
     }
 
     public Message(String content, String username, boolean isAIgenerated, String selectedGoalName, String selectedGoalDate, JSONArray generatedTaskArray) {

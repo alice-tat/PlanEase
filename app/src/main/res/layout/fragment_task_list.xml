@@ -22,20 +22,21 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
         <ImageButton
-            android:id="@+id/taskOptionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/more"
-            android:layout_gravity="center_vertical"
-            android:backgroundTint="@color/primary_blue"/>
-        <ImageButton
             android:id="@+id/addTaskButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/add"
             android:layout_gravity="center_vertical"
-            android:backgroundTint="@color/primary_blue"
-            android:visibility="gone"/>
+            android:layout_marginRight="@dimen/gap_small"
+            android:backgroundTint="@color/primary_blue"/>
+        <ImageButton
+            android:id="@+id/taskOptionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/more"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/gap_small"
+            android:backgroundTint="@color/primary_blue"/>
     </LinearLayout>
 
     <com.google.android.material.divider.MaterialDivider

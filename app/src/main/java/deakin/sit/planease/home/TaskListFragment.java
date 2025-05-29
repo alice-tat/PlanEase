@@ -93,13 +93,6 @@ public class TaskListFragment extends Fragment {
     private void handleTaskOptionButton(View view) {
         isEditable = !isEditable;
         taskAdapter.setIsEditable(isEditable);
-        if (isEditable) {
-            taskOptionButton.setVisibility(View.GONE);
-            addTaskButton.setVisibility(View.VISIBLE);
-        } else {
-            taskOptionButton.setVisibility(View.VISIBLE);
-            addTaskButton.setVisibility(View.GONE);
-        }
     }
 
     private void handleAddTaskButton(View view) {
@@ -126,7 +119,7 @@ public class TaskListFragment extends Fragment {
 
         // Prepare data
         int request_method = Request.Method.GET;
-        String url = Constant.BACKEND_URL + Constant.TASK_CRUD_ROUTE + "?user_id=" + currentUser.getId() + "&finish=0";
+        String url = Constant.BACKEND_URL + Constant.TASK_CRUD_ROUTE + "?user_id=" + currentUser.getId() + "&finish=0" + "&goal_id=";
 
         // Send request
         JsonObjectRequest request = new JsonObjectRequest(request_method, url, null,

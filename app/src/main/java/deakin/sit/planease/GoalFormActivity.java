@@ -1,5 +1,6 @@
 package deakin.sit.planease;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,10 +10,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -22,17 +28,31 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import deakin.sit.planease.dto.Goal;
+import deakin.sit.planease.dto.Task;
 import deakin.sit.planease.dto.User;
+import deakin.sit.planease.home.HomeActivity;
+import deakin.sit.planease.home.adapter.TaskAdapter;
 
 public class GoalFormActivity extends AppCompatActivity {
     private static final String TAG = "INFO:GoalFormActivity";
     EditText inputName, inputDate;
     Button cancelButton, saveGoalButton;
+    RecyclerView taskListRecyclerView;
 
     User currentUser;
+    Goal currentGoal;
+
+    List<Task> currentTaskList;
+    TaskAdapter taskAdapter;
+
+    ActivityResultLauncher<Intent> activityResultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +67,36 @@ public class GoalFormActivity extends AppCompatActivity {
 
         // Get data
         currentUser = (User) getIntent().getSerializableExtra("User");
+        currentGoal = (Goal) getIntent().getSerializableExtra("Goal");
+        currentTaskList = new ArrayList<Task>();
+        getTaskListFromServer();
 
         // Setup view
         inputName = findViewById(R.id.inputName);
         inputDate = findViewById(R.id.inputDate);
         cancelButton = findViewById(R.id.cancelButton);
         saveGoalButton = findViewById(R.id.saveGoalButton);
+        taskListRecyclerView = findViewById(R.id.taskListRecyclerView);
 
         // Config button
         cancelButton.setOnClickListener(this::handleCancelButton);
         saveGoalButton.setOnClickListener(this::handleSaveGoalButton);
+
+        // Config recycler views
+        taskAdapter = new TaskAdapter(currentTaskList, this);
+        taskListRecyclerView.setAdapter(taskAdapter);
+        taskListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Config register launcher
+        activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                this::handleResultFromActivity
+        );
+    }
+
+    private void loadTaskAndRefresh(List<Task> newTaskList) {
+        currentTaskList = newTaskList;
+        taskAdapter.updateTaskList(currentTaskList);
     }
 
     private void handleCancelButton(View view) {
@@ -74,6 +114,25 @@ public class GoalFormActivity extends AppCompatActivity {
             return;
         }
         addGoalToServer(currentUser.getId(), name, date);
+    }
+
+    private void handleAddTaskButton(View view) {
+        Intent intent = new Intent(this, TaskFormActivity.class);
+        intent.putExtra("User", currentUser);
+        activityResultLauncher.launch(intent);
+    }
+
+    public void handleEditTaskButton (Task task) {
+        Intent intent = new Intent(this, TaskFormActivity.class);
+        intent.putExtra("User", currentUser);
+        intent.putExtra("Task", task);
+        activityResultLauncher.launch(intent);
+    }
+
+    private void handleResultFromActivity(ActivityResult result) {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            getTaskListFromServer();
+        }
     }
 
     private void resetInputFields() {
@@ -123,6 +182,92 @@ public class GoalFormActivity extends AppCompatActivity {
                         String errorMsg = error.networkResponse != null ? "HTTP " + error.networkResponse.statusCode + ": " + new String(error.networkResponse.data) : error.getMessage() != null ? error.getMessage() : "Unknown error";
                         Log.e(TAG, "Error: " + errorMsg, error);
                         Toast.makeText(GoalFormActivity.this, "Error: " + errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                });
+        request.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(request);
+    }
+
+    private void getTaskListFromServer() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        // Prepare data
+        int request_method = Request.Method.GET;
+        String url = Constant.BACKEND_URL + Constant.TASK_CRUD_ROUTE + "?user_id=" + currentUser.getId()  + "&finish=0" + "&goal_id=" + currentGoal.getId();
+
+        // Send request
+        JsonObjectRequest request = new JsonObjectRequest(request_method, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Log.i(TAG, "Response: " + response.toString());
+
+                            JSONArray tasksArray = response.getJSONArray("tasks");
+
+                            List<Task> newTaskList = new ArrayList<Task>();
+                            for (int i = 0; i < tasksArray.length(); i++) {
+                                JSONObject taskJSON = tasksArray.getJSONObject(i);
+
+                                Task task = new Task(
+                                        taskJSON.getString("_id"),
+                                        taskJSON.getString("user_id"),
+                                        taskJSON.getString("goal_id"),
+                                        taskJSON.getString("name"),
+                                        taskJSON.getString("date"),
+                                        taskJSON.getBoolean("finish")
+                                );
+
+                                newTaskList.add(task);
+                            }
+
+                            loadTaskAndRefresh(newTaskList);
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error parsing response: " + e.getMessage(), e);
+                            Toast.makeText(GoalFormActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        String errorMsg = error.networkResponse != null ? "HTTP " + error.networkResponse.statusCode + ": " + new String(error.networkResponse.data) : error.getMessage() != null ? error.getMessage() : "Unknown error";
+                        Log.e(TAG, "Error saving note: " + errorMsg, error);
+                        Toast.makeText(GoalFormActivity.this, "Error saving note: " + errorMsg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        request.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(request);
+    }
+
+    public void deleteTaskFromServer(String taskId) {
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        // Prepare data
+        int request_method = Request.Method.DELETE;
+        String url = Constant.BACKEND_URL + Constant.TASK_CRUD_ROUTE + "/" + taskId;
+
+        // Send request
+        JsonObjectRequest request = new JsonObjectRequest(request_method, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Toast.makeText(GoalFormActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                            getTaskListFromServer();
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error parsing response: " + e.getMessage(), e);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        String errorMsg = error.networkResponse != null ? "HTTP " + error.networkResponse.statusCode + ": " + new String(error.networkResponse.data) : error.getMessage() != null ? error.getMessage() : "Unknown error";
+                        Toast.makeText(GoalFormActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Error: " + errorMsg, error);
                     }
                 });
         request.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));

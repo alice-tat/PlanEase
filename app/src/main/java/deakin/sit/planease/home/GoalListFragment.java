@@ -93,13 +93,6 @@ public class GoalListFragment extends Fragment {
     private void handleGoalOptionButton(View view) {
         isEditable = !isEditable;
         goalAdapter.setIsEditable(isEditable);
-        if (isEditable) {
-            goalOptionButton.setVisibility(View.GONE);
-            addGoalButton.setVisibility(View.VISIBLE);
-        } else {
-            goalOptionButton.setVisibility(View.VISIBLE);
-            addGoalButton.setVisibility(View.GONE);
-        }
     }
 
     private void handleAddGoalButton(View view) {

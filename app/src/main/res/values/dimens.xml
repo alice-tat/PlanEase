@@ -10,9 +10,14 @@
     <dimen name="gap_medium">10dp</dimen>
     <dimen name="gap_small">5dp</dimen>
 
-    <dimen name="h1_text_size">42sp</dimen>
-    <dimen name="h2_text_size">36sp</dimen>
-    <dimen name="h3_text_size">28sp</dimen>
-    <dimen name="h4_text_size">20sp</dimen>
-    <dimen name="h5_text_size">16sp</dimen>
+<!--    <dimen name="h1_text_size">42sp</dimen>-->
+<!--    <dimen name="h2_text_size">36sp</dimen>-->
+<!--    <dimen name="h3_text_size">28sp</dimen>-->
+<!--    <dimen name="h4_text_size">20sp</dimen>-->
+<!--    <dimen name="h5_text_size">16sp</dimen>-->
+    <dimen name="h1_text_size">36sp</dimen>
+    <dimen name="h2_text_size">28sp</dimen>
+    <dimen name="h3_text_size">20sp</dimen>
+    <dimen name="h4_text_size">16sp</dimen>
+    <dimen name="h5_text_size">13sp</dimen>
 </resources>

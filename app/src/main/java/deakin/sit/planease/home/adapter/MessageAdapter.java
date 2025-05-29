@@ -44,11 +44,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             holder.responseText.setText(message.getContent());
             if (message.getGeneratedTaskArray()!=null) {
                 holder.generateTaskButton.setVisibility(View.VISIBLE);
+                holder.changeMessageButton.setVisibility(View.VISIBLE);
+                holder.changeMessageButton.setOnClickListener(view -> {
+                    fragment.changeMessage(message);
+                });
                 holder.generateTaskButton.setOnClickListener(view -> {
                     fragment.generateTaskBasedOnMessage(message);
                 });
             } else {
                 holder.generateTaskButton.setVisibility(View.GONE);
+                holder.changeMessageButton.setVisibility(View.GONE);
             }
         } else {
             holder.responseBlock.setVisibility(View.GONE);
@@ -56,7 +61,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             holder.messageBlock.setVisibility(View.VISIBLE);
 
             holder.usernameText.setText(message.getUsername());
-            holder.messageText.setText(message.getContent());
+
+            String combinedMessage = "Goal: " + message.getSelectedGoalName() + "\nDate: " + message.getSelectedGoalDate() + "\n" + message.getContent();
+            holder.messageText.setText(combinedMessage);
         }
     }
 
@@ -75,7 +82,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         TextView usernameText, messageText, responseText;
         View padLeftBlock;
 
-        Button generateTaskButton;
+        Button generateTaskButton, changeMessageButton;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -86,6 +93,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             responseText = itemView.findViewById(R.id.responseText);
 
             generateTaskButton = itemView.findViewById(R.id.generateTaskButton);
+            changeMessageButton = itemView.findViewById(R.id.changeMessageButton);
 
             padLeftBlock = itemView.findViewById(R.id.padLeftBlock);
         }
