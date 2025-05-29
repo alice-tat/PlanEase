@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="primary_blue">#3DA5D9</color>
+    <color name="primary_red">#ED6A5E</color>
+
+    <color name="soft_background">#FAFAFF</color>
+    <color name="soft_navbar">#F0F8FF</color>
+
+    <color name="grey_dark">#828282</color>
+    <color name="grey_light">#E0E0E0</color>
+
+    <color name="selected_AppCompatToggleButton">#AFDCEB</color>
+    <color name="default_AppCompatToggleButton">#F0F8FF</color>
+    <color name="cornflower">#8EC3E6</color>
+    <color name="water">#D1F6FF</color>
+    <color name="ice_berg">#6BADCE</color>
+    <color name="chinese_blue">#3A5D9C</color>
+
+</resources>

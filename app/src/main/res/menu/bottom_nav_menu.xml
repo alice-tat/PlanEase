@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigationTaskList"
+        android:icon="@drawable/schedule"
+        android:title="@string/nav_task_list" />
+    <item
+        android:id="@+id/navigationGoalList"
+        android:icon="@drawable/target"
+        android:title="@string/nav_goal_list" />
+    <item
+        android:id="@+id/navigationAIChat"
+        android:icon="@drawable/chat"
+        android:title="@string/nav_ai_chat" />
+
+    <item
+        android:id="@+id/navigationAccount"
+        android:icon="@drawable/user"
+        android:title="@string/nav_account" />
+</menu>

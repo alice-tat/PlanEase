@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".home.AccountFragment"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/subtitle_account"
+        android:textSize="@dimen/h3_text_size"
+        android:textStyle="bold"
+        android:textColor="@color/primary_red"/>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginVertical="@dimen/gap_medium"/>
+
+    <TextView
+        android:id="@+id/welcomeUserTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hi, User"
+        android:textSize="@dimen/h3_text_size"
+        android:textAlignment="center"
+        android:textStyle="bold"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Welcome to PlanEase"
+        android:textSize="@dimen/h3_text_size"
+        android:textAlignment="center"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose your action with your account"
+            android:textSize="@dimen/h4_text_size"
+            android:textStyle="bold"/>
+        <Button
+            android:id="@+id/logoutButton"
+            app:backgroundTint="@color/primary_blue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_logout"
+            android:textSize="@dimen/h4_text_size"
+            android:paddingVertical="@dimen/gap_medium"
+            android:layout_marginTop="@dimen/gap_larger"
+            android:layout_marginHorizontal="@dimen/gap_medium"/>
+        <Button
+            android:id="@+id/deleteAccountButton"
+            app:backgroundTint="@color/primary_red"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_delete_account"
+            android:textSize="@dimen/h4_text_size"
+            android:paddingVertical="@dimen/gap_medium"
+            android:layout_marginTop="@dimen/gap_larger"
+            android:layout_marginHorizontal="@dimen/gap_medium"/>
+    </LinearLayout>
+
+</LinearLayout>

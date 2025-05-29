@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/gap_medium"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/taskContentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toLeftOf="@+id/goalEditButton"
+            android:layout_alignParentStart="true">
+            <TextView
+                android:id="@+id/goalDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="In progress"
+                android:textColor="@color/grey_dark"/>
+
+            <TextView
+                android:id="@+id/goalName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Goal name here"
+                android:textSize="@dimen/h4_text_size"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/goalEditButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/pencil"
+            android:backgroundTint="@color/primary_blue"
+            android:layout_toLeftOf="@+id/goalDeleteButton"
+            android:layout_centerVertical="true"/>
+
+        <ImageButton
+            android:id="@+id/goalDeleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/close"
+            android:backgroundTint="@color/primary_red"
+            android:layout_marginLeft="@dimen/gap_medium"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/taskListRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

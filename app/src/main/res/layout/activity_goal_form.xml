@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GoalFormActivity"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/activity_layout_margin">
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textSize="@dimen/h2_text_size"
+        android:textStyle="bold"
+        android:textColor="@color/primary_blue"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/subtitle_add_goal"
+        android:textSize="@dimen/h3_text_size"
+        android:textStyle="bold"
+        android:textColor="@color/primary_red"/>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginVertical="@dimen/gap_medium"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_input_goal_name"
+                android:textSize="@dimen/h4_text_size"
+                android:layout_marginStart="@dimen/gap_small"
+                android:layout_marginBottom="@dimen/gap_medium"/>
+
+            <EditText
+                android:id="@+id/inputName"
+                android:autofillHints="emailAddress"
+                android:hint="@string/hint_input_goal_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:background="@drawable/style_rounded_edit_text"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_input_expected_date"
+                android:textSize="@dimen/h4_text_size"
+                android:layout_marginStart="@dimen/gap_small"
+                android:layout_marginVertical="@dimen/gap_medium"/>
+
+            <EditText
+                android:id="@+id/inputDate"
+                android:hint="@string/hint_input_expected_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:background="@drawable/style_rounded_edit_text"
+                tools:ignore="Autofill" />
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/gap_medium">
+        <Button
+            android:id="@+id/cancelButton"
+            app:backgroundTint="@color/primary_red"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel"
+            android:textSize="@dimen/h4_text_size"
+            android:paddingVertical="@dimen/gap_medium"
+            android:layout_marginRight="@dimen/gap_small"/>
+        <Button
+            android:id="@+id/saveGoalButton"
+            app:backgroundTint="@color/primary_blue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Save"
+            android:textSize="@dimen/h4_text_size"
+            android:paddingVertical="@dimen/gap_medium"
+            android:layout_marginLeft="@dimen/gap_small"/>
+    </LinearLayout>
+
+</LinearLayout>

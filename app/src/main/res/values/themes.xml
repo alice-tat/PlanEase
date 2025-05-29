@@ -1,0 +1,18 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <!--    <style name="Base.Theme.PlanEase" parent="Theme.Material3.DayNight.NoActionBar">-->
+    <!--        &lt;!&ndash; Customize your light theme here. &ndash;&gt;-->
+    <!--        &lt;!&ndash; <item name="colorPrimary">@color/my_light_primary</item> &ndash;&gt;-->
+    <!--    </style>-->
+
+    <style name="Base.Theme.PlanEase" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="android:windowBackground">@color/soft_background</item>
+    </style>
+
+    <style name="Theme.PlanEase" parent="Base.Theme.PlanEase" />
+
+    <style name="BottomNavThem" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/soft_background</item>
+    </style>
+</resources>

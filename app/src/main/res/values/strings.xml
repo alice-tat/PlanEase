@@ -1,0 +1,61 @@
+<resources>
+    <string name="app_name">PlanEase</string>
+    <string name="title_activity_home">HomeActivity</string>
+
+    <!-- Nav -->
+    <string name="nav_task_list">Task</string>
+    <string name="nav_goal_list">Goal</string>
+    <string name="nav_ai_chat">Chat</string>
+    <string name="nav_account">Account</string>
+
+    <!-- Titles -->
+    <string name="title_login">Login</string>
+    <string name="title_register">Register</string>
+
+    <string name="subtitle_task_list">Your scheduled tasks</string>
+    <string name="subtitle_goal_list">Your goals</string>
+    <string name="subtitle_ai_assistant">Your AI assistant</string>
+    <string name="subtitle_account">Your account</string>
+
+    <string name="subtitle_add_task">Task Information</string>
+    <string name="subtitle_add_goal">Goal Information</string>
+    <string name="subtitle_add_task_to_goal">Associated Tasks</string>
+
+    <!-- Forms -->
+    <string name="label_input_name">Enter your name</string>
+    <string name="label_input_email">Enter your email</string>
+    <string name="label_input_password">Enter your password</string>
+
+    <string name="label_input_task_name">Enter task name</string>
+    <string name="label_input_goal_name">Enter goal name</string>
+    <string name="label_input_task_goal">Select associated goal</string>
+    <string name="label_input_expected_date">Enter expected date</string>
+
+    <string name="text_suggest_register">Don\'t have an account?</string>
+    <string name="hint_input_name">Name</string>
+    <string name="hint_input_email">email@domain.com</string>
+    <string name="hint_input_password">password</string>
+
+    <string name="hint_input_task_name">Task name</string>
+    <string name="hint_input_goal_name">Goal name</string>
+    <string name="hint_input_task_goal">Target goal</string>
+    <string name="hint_input_expected_date">DD/MM/YYYY</string>
+
+    <string name="button_login">Login</string>
+    <string name="button_register">Register</string>
+    <string name="button_logout">Logout</string>
+    <string name="button_delete_account">Delete Account</string>
+    <string name="link_register"><u>Register</u></string>
+
+    <!--    <string name="label_input_email">Enter your email</string>-->
+    <!--    <string name="label_input_password">Enter your password</string>-->
+    <!--    <string name="button_login">Login</string>-->
+    <!--    <string name="button_register"><u>Register</u></string>-->
+
+    <!--    <string name="text_suggest_register">Don\'t have an account?</string>-->
+    <!--    <string name="hint_input_email">email@domain.com</string>-->
+    <!--    <string name="hint_input_password">password</string>-->
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

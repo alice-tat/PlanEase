@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <View
+        android:id="@+id/padLeftBlock"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="0sp"/>
+
+    <LinearLayout
+        android:id="@+id/responseBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/gap_large"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AI generated"
+            android:textSize="16sp"
+            android:layout_marginHorizontal="10sp"
+            />
+        <TextView
+            android:id="@+id/responseText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="Response will appear here"
+            android:layout_marginVertical="8dp"
+            android:padding="10sp"
+            android:background="@drawable/llm_message_block"
+            />
+        <Button
+            android:id="@+id/generateTaskButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Generate task"
+            android:backgroundTint="@color/primary_red"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/messageBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/gap_large">
+        <TextView
+            android:id="@+id/usernameText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="User"
+            android:textSize="16sp"
+            android:textAlignment="textEnd"
+            android:layout_marginHorizontal="10sp"
+            />
+        <TextView
+            android:id="@+id/messageText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="Your text message here"
+            android:textColor="@color/white"
+            android:layout_marginVertical="8dp"
+            android:padding="10sp"
+            android:background="@drawable/user_message_block"
+            />
+    </LinearLayout>
+
+</LinearLayout>
