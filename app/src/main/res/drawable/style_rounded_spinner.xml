@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/white"/>
-    <stroke android:color="@color/grey_light" android:width="2dp"/>
-    <corners android:radius="10dp"/>
-    <padding
-        android:bottom="12dp"
-        android:left="12dp"
-        android:right="12dp"
-        android:top="12dp" />
-</shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item><layer-list>
+        <item>
+            <shape>
+                <solid android:color="@color/white"/>
+                <stroke android:color="@color/grey_light" android:width="2dp"/>
+                <corners android:radius="10dp"/>
+                <padding
+                    android:bottom="12dp"
+                    android:left="12dp"
+                    android:right="12dp"
+                    android:top="12dp" />
+            </shape>
+        </item>
+        <item>
+            <bitmap
+                android:gravity="bottom|right"
+                android:src="@drawable/down"/>
+        </item>
+    </layer-list></item>
+</selector>

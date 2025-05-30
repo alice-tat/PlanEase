@@ -39,15 +39,14 @@ import deakin.sit.planease.dto.User;
 import deakin.sit.planease.home.adapter.GoalAdapter;
 
 public class GoalListFragment extends Fragment {
-    private static final String TAG = "INFO:HomeActivity-GoalListFragment";
+    private static final String TAG = "INFO:GoalListFragment";
+
     ImageButton goalOptionButton, addGoalButton;
     RecyclerView goalListRecyclerView;
 
+    boolean isEditable = false;
     GoalAdapter goalAdapter;
     List<Goal> currentGoalList;
-
-    boolean isEditable = false;
-
     User currentUser;
 
     ActivityResultLauncher<Intent> activityResultLauncher;
@@ -85,6 +84,7 @@ public class GoalListFragment extends Fragment {
         return view;
     }
 
+    // Operation handling
     private void loadGoalAndRefresh(List<Goal> newGoalList) {
         currentGoalList = newGoalList;
         goalAdapter.updateGoalList(currentGoalList);
@@ -114,6 +114,7 @@ public class GoalListFragment extends Fragment {
         }
     }
 
+    // Backend interaction
     private void getGoalListFromServer() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
@@ -129,6 +130,7 @@ public class GoalListFragment extends Fragment {
                         try {
                             Log.i(TAG, "Response: " + response.toString());
 
+                            // Get data
                             JSONArray goalArray = response.getJSONArray("goals");
 
                             List<Goal> receivedGoalList = new ArrayList<Goal>();
@@ -145,6 +147,7 @@ public class GoalListFragment extends Fragment {
                                 receivedGoalList.add(goal);
                             }
 
+                            // Load and refresh
                             loadGoalAndRefresh(receivedGoalList);
                         } catch (Exception e) {
                             Log.e(TAG, "Error parsing response: " + e.getMessage(), e);
@@ -191,6 +194,39 @@ public class GoalListFragment extends Fragment {
                         String errorMsg = error.networkResponse != null ? "HTTP " + error.networkResponse.statusCode + ": " + new String(error.networkResponse.data) : error.getMessage() != null ? error.getMessage() : "Unknown error";
                         ((HomeActivity) getActivity()).showToastMessage(errorMsg);
                         Log.e(TAG, "Error: " + errorMsg, error);
+                    }
+                });
+        request.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(request);
+    }
+
+    public void markTaskAsFinish(String goalId) {
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+
+        // Prepare data
+        int request_method = Request.Method.PUT;
+        String url = Constant.BACKEND_URL + Constant.GOAL_FINISH_ROUTE + "/" + goalId;
+
+        // Send request
+        JsonObjectRequest request = new JsonObjectRequest(request_method, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            ((HomeActivity) getActivity()).showToastMessage(response.getString("message"));
+                            getGoalListFromServer();
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error parsing response: " + e.getMessage(), e);
+                            ((HomeActivity) getActivity()).showToastMessage("Error parsing response: " + e.getMessage());
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        String errorMsg = error.networkResponse != null ? "HTTP " + error.networkResponse.statusCode + ": " + new String(error.networkResponse.data) : error.getMessage() != null ? error.getMessage() : "Unknown error";
+                        Log.e(TAG, "Error: " + errorMsg, error);
+                        ((HomeActivity) getActivity()).showToastMessage("Error: " + errorMsg);
                     }
                 });
         request.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));

@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -26,11 +25,11 @@ import org.json.JSONObject;
 
 import deakin.sit.planease.Constant;
 import deakin.sit.planease.R;
-import deakin.sit.planease.RegisterActivity;
 import deakin.sit.planease.dto.User;
 
 public class AccountFragment extends Fragment {
     private static final String TAG = "INFO:HomeActivity-AccountFragment";
+
     TextView welcomeUserTextView;
     Button logoutButton, deleteAccountButton;
 
@@ -58,6 +57,7 @@ public class AccountFragment extends Fragment {
         return view;
     }
 
+    // Operation handling
     private void handleLogoutButton(View view) {
         Intent intent = new Intent().putExtra("Message", "Logout successful");
         getActivity().setResult(Activity.RESULT_OK, intent);
@@ -68,6 +68,7 @@ public class AccountFragment extends Fragment {
         deleteUserFromServer(currentUser.getId());
     }
 
+    // Backend interaction
     private void deleteUserFromServer(String userId) {
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
@@ -84,8 +85,8 @@ public class AccountFragment extends Fragment {
                             ((HomeActivity) getActivity()).showToastMessage(response.getString("message"));
 
                             // Send result
-                            Intent intent = new Intent().putExtra("Message", "Account deleted");
-                            getActivity().setResult(Activity.RESULT_OK, intent);
+//                            Intent intent = new Intent().putExtra("Message", "Account deleted");
+//                            getActivity().setResult(Activity.RESULT_OK, intent);
                             getActivity().finish();
                         } catch (Exception e) {
                             Log.e(TAG, "Error parsing response: " + e.getMessage(), e);

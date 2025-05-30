@@ -1,5 +1,6 @@
 package deakin.sit.planease.home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -42,14 +44,14 @@ import deakin.sit.planease.home.adapter.MessageAdapter;
 
 public class AIChatFragment extends Fragment {
     private static final String TAG = "INFO:AIChatFragment";
-    private EditText inputGoal, targetDate, chatInputBox;
-    private Button sendButton;
-    private ProgressBar progressBar;
 
-    private RecyclerView recyclerView;
-    private MessageAdapter messageAdapter;
-    private List<Message> messageList;
+    EditText inputGoal, targetDate, chatInputBox;
+    Button sendButton;
+    ProgressBar progressBar;
 
+    RecyclerView recyclerView;
+    List<Message> messageList;
+    MessageAdapter messageAdapter;
     User currentUser;
 
     @Override
@@ -60,10 +62,9 @@ public class AIChatFragment extends Fragment {
 
         // Get data
         currentUser = ((HomeActivity) getActivity()).currentUser;
+        messageList = ((HomeActivity) getActivity()).currentAINessageList;
 
-        // Init data
-        messageList = new ArrayList<Message>();
-        messageList.add(new Message("Welcome user", "AI", true, "", "")); // Message(content, username, isAIgenerated)
+        // Init adapter
         messageAdapter = new MessageAdapter(messageList, this);
 
         // Setup view
@@ -84,10 +85,17 @@ public class AIChatFragment extends Fragment {
         return view;
     }
 
+    // Operation handling
     private void resetInputFields() {
         inputGoal.setText("");
         targetDate.setText("");
         chatInputBox.setText("");
+    }
+
+    public void changeMessage(Message message) {
+        inputGoal.setText(message.getSelectedGoalName());
+        targetDate.setText(message.getSelectedGoalDate());
+        chatInputBox.setText(message.getContent());
     }
 
     private void handleSendButton(View view) {
@@ -101,19 +109,24 @@ public class AIChatFragment extends Fragment {
         }
         messageAdapter.addNewMessage(new Message(message, currentUser.getName(), false, goalName, goalDate));
 
-        // Show ProgressBar and clear previous response
         progressBar.setVisibility(View.VISIBLE);
         resetInputFields();
+        closeKeyboard();
 
         sendMessageToServer(goalName, goalDate, message);
     }
 
-    public void changeMessage(Message message) {
-        inputGoal.setText(message.getSelectedGoalName());
-        targetDate.setText(message.getSelectedGoalDate());
-        chatInputBox.setText(message.getContent());
+    private void closeKeyboard()
+    {
+        View view = getActivity().getCurrentFocus();
+
+        if (view != null) {
+            InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
+    // Backend interaction
     public void generateTaskBasedOnMessage(Message message) {
         RequestQueue queue = Volley.newRequestQueue(getContext());
 
@@ -151,7 +164,6 @@ public class AIChatFragment extends Fragment {
                         try {
                             // Send result
                             ((HomeActivity) getActivity()).showToastMessage(response.getString("message"));
-//                            ((HomeActivity) getActivity()).setCurrentFragment(new TaskListFragment());
                             ((HomeActivity) getActivity()).bottomNavigationView.setSelectedItemId(HomeActivity.ID_MENU_NATIVATION_TASK_LIST);
                         } catch (Exception e) {
                             Log.e(TAG, "Error parsing response: " + e.getMessage(), e);
@@ -187,6 +199,7 @@ public class AIChatFragment extends Fragment {
                         try {
                             progressBar.setVisibility(View.GONE);
 
+                            // Get result
                             Message aiMessage = new Message(
                                     response.getString("message"),
                                     "AI",
@@ -196,9 +209,6 @@ public class AIChatFragment extends Fragment {
                                     response.getJSONArray("task")
                             );
                             messageAdapter.addNewMessage(aiMessage);
-
-                            ((HomeActivity) getActivity()).showToastMessage(response.getString("message"));
-
                         } catch (Exception e) {
                             progressBar.setVisibility(View.GONE);
                             Log.e(TAG, "Error parsing response: " + e.getMessage(), e);

@@ -15,7 +15,11 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import deakin.sit.planease.R;
+import deakin.sit.planease.dto.Message;
 import deakin.sit.planease.dto.User;
 
 public class HomeActivity extends AppCompatActivity {
@@ -24,15 +28,12 @@ public class HomeActivity extends AppCompatActivity {
     public static final int ID_MENU_NATIVATION_AI_CHAT = R.id.navigationAIChat;
     public static final int ID_MENU_NATIVATION_ACCOUNT = R.id.navigationAccount;
 
-    // Views
+    FragmentManager fragmentManager;
     FragmentContainerView fragmentContainerView;
     BottomNavigationView bottomNavigationView;
 
-    // Others
-    FragmentManager fragmentManager;
-
-    // User data
     User currentUser;
+    List<Message> currentAINessageList;
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -48,6 +49,12 @@ public class HomeActivity extends AppCompatActivity {
 
         // Get intent data
         currentUser = (User) getIntent().getSerializableExtra("User");
+
+        currentAINessageList = new ArrayList<Message>();
+        currentAINessageList.add(new Message(
+                "Welcome user", "AI",
+                true, "", "")
+        ); // Message(content, username, isAIgenerated, provided goal name, provided goal date)
 
         // Setup views
         fragmentContainerView = findViewById(R.id.fragmentContainerView);
@@ -86,5 +93,4 @@ public class HomeActivity extends AppCompatActivity {
     public void showToastMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
-
 }

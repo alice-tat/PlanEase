@@ -53,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
         registerButton.setOnClickListener(this::handleRegisterButton);
     }
 
+    // Operation handling
     private void handleBackButton(View view) {
         Intent intent = new Intent().putExtra("Message", "Register cancelled");
         setResult(RESULT_CANCELED, intent);
@@ -77,6 +78,7 @@ public class RegisterActivity extends AppCompatActivity {
         inputPassword.setText("");
     }
 
+    // Backend interaction
     private void addUserToServer(String name, String email, String password) {
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -104,8 +106,8 @@ public class RegisterActivity extends AppCompatActivity {
 
                             // Send result
                             Toast.makeText(RegisterActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent().putExtra("Message", "Register successful");
-                            setResult(RESULT_OK, intent);
+//                            Intent intent = new Intent().putExtra("Message", "Register successful");
+//                            setResult(RESULT_OK, intent);
                             finish();
                         } catch (Exception e) {
                             Log.e(TAG, "Error parsing response: " + e.getMessage(), e);

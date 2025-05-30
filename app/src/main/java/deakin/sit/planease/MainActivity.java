@@ -10,9 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -33,11 +30,12 @@ import deakin.sit.planease.home.HomeActivity;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "INFO:LoginActivity";
+
     EditText inputEmail, inputPassword;
     Button loginButton;
     TextView registerText;
 
-    ActivityResultLauncher<Intent> activityResultLauncher;
+//    ActivityResultLauncher<Intent> activityResultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +59,13 @@ public class MainActivity extends AppCompatActivity {
         registerText.setOnClickListener(this::handleRegisterButton);
 
         // Config register launcher
-        activityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                this::handleResultFromActivity
-        );
+//        activityResultLauncher = registerForActivityResult(
+//                new ActivityResultContracts.StartActivityForResult(),
+//                this::handleResultFromActivity
+//        );
     }
 
-    // Functions
+    // Operation handling
     private void resetInputFields() {
         inputEmail.setText("");
         inputPassword.setText("");
@@ -86,25 +84,25 @@ public class MainActivity extends AppCompatActivity {
 
     private void handleRegisterButton(View view) {
         Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
-        activityResultLauncher.launch(intent);
+        startActivity(intent);
     }
 
     // Activity handling
     private void startHomeActivity(User currentUser) {
         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
         intent.putExtra("User", currentUser);
-        activityResultLauncher.launch(intent);
+        startActivity(intent);
     }
 
-    private void handleResultFromActivity(ActivityResult result) {
-        String returnedMessage = "";
-        if (result.getResultCode() == RESULT_OK) {
-            returnedMessage = result.getData()!=null ? result.getData().getStringExtra("Message") : "Result OK";
-        } else {
-            returnedMessage = result.getData()!=null ? result.getData().getStringExtra("Message") : "Result Cancelled";
-        }
-        Toast.makeText(this, returnedMessage, Toast.LENGTH_SHORT).show();
-    }
+//    private void handleResultFromActivity(ActivityResult result) {
+//        String returnedMessage = "";
+//        if (result.getResultCode() == RESULT_OK) {
+//            returnedMessage = result.getData()!=null ? result.getData().getStringExtra("Message") : "Result OK";
+//        } else {
+//            returnedMessage = result.getData()!=null ? result.getData().getStringExtra("Message") : "Result Cancelled";
+//        }
+//        Toast.makeText(this, returnedMessage, Toast.LENGTH_SHORT).show();
+//    }
 
     // Backend interaction
     private void getUserFromServer(String email, String password) {

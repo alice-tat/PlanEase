@@ -27,7 +27,6 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,13 +36,13 @@ import deakin.sit.planease.dto.User;
 
 public class TaskFormActivity extends AppCompatActivity {
     private static final String TAG = "INFO:TaskFormActivity";
+
     EditText inputName, inputDate;
     Spinner selectGoalSpinner;
     Button cancelButton, saveTaskButton;
 
     List<Goal> goalList;
     ArrayAdapter<Goal> goalListAdapter;
-
     User currentUser;
     Task currentTask;
 
@@ -80,24 +79,7 @@ public class TaskFormActivity extends AppCompatActivity {
         selectGoalSpinner.setAdapter(goalListAdapter);
     }
 
-    private void fillCurrentTaskFields() {
-        if (currentTask==null) {
-            return;
-        }
-        inputName.setText(currentTask.getName());
-        inputDate.setText(currentTask.getDate());
-        if (goalList == null) {
-            return;
-        }
-        for (int i=0; i<goalList.size(); i++) {
-            Goal goal = goalList.get(i);
-            if (goal.getId().equals(currentTask.getGoalId())) {
-                selectGoalSpinner.setSelection(i);
-                return;
-            }
-        }
-    }
-
+    // Operation handling
     private void handleCancelButton(View view) {
         Intent intent = new Intent().putExtra("Message", "Cancelled");
         setResult(RESULT_CANCELED, intent);
@@ -121,12 +103,32 @@ public class TaskFormActivity extends AppCompatActivity {
         inputDate.setText("");
     }
 
+    // Fill and load data
+    private void fillCurrentTaskFields() {
+        if (currentTask==null) {
+            return;
+        }
+        inputName.setText(currentTask.getName());
+        inputDate.setText(currentTask.getDate());
+        if (goalList == null) {
+            return;
+        }
+        for (int i=0; i<goalList.size(); i++) {
+            Goal goal = goalList.get(i);
+            if (goal.getId().equals(currentTask.getGoalId())) {
+                selectGoalSpinner.setSelection(i);
+                return;
+            }
+        }
+    }
+
     public void loadGoalAndRefresh(List<Goal> updatedGoalList) {
         goalList = updatedGoalList;
         goalListAdapter = new ArrayAdapter<Goal>(this, android.R.layout.simple_spinner_item, goalList);
         selectGoalSpinner.setAdapter(goalListAdapter);
     }
 
+    // Backend interaction
     private void getGoalListFromServer() {
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -140,6 +142,7 @@ public class TaskFormActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            // Get result
                             JSONArray goalArray = response.getJSONArray("goals");
 
                             List<Goal> receivedGoalList = new ArrayList<Goal>();
@@ -156,6 +159,7 @@ public class TaskFormActivity extends AppCompatActivity {
                                 receivedGoalList.add(goal);
                             }
 
+                            // Load data
                             loadGoalAndRefresh(receivedGoalList);
                             fillCurrentTaskFields();
                         } catch (Exception e) {
@@ -204,7 +208,6 @@ public class TaskFormActivity extends AppCompatActivity {
 
                             // Send result
                             Toast.makeText(TaskFormActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
-
                             Intent intent = new Intent().putExtra("Message", "Success");
                             setResult(RESULT_OK, intent);
                             finish();

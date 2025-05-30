@@ -29,25 +29,37 @@
                 android:text="Goal name here"
                 android:textSize="@dimen/h4_text_size"/>
         </LinearLayout>
-
-        <ImageButton
-            android:id="@+id/goalEditButton"
+        <LinearLayout
+            android:id="@+id/buttonGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/pencil"
-            android:backgroundTint="@color/primary_blue"
-            android:layout_toLeftOf="@+id/goalDeleteButton"
-            android:layout_centerVertical="true"/>
-
-        <ImageButton
-            android:id="@+id/goalDeleteButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/close"
-            android:backgroundTint="@color/primary_red"
-            android:layout_marginLeft="@dimen/gap_medium"
+            android:orientation="horizontal"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="@dimen/gap_medium">
+            <Button
+                android:id="@+id/markFinishButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Finish"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:backgroundTint="@color/primary_blue"/>
+            <ImageButton
+                android:id="@+id/goalEditButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/pencil"
+                android:backgroundTint="@color/primary_blue"/>
+            <ImageButton
+                android:id="@+id/goalDeleteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/close"
+                android:backgroundTint="@color/primary_red"
+                android:layout_marginLeft="@dimen/gap_medium"/>
+        </LinearLayout>
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView

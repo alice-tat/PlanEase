@@ -3,6 +3,7 @@ package deakin.sit.planease.home.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -16,9 +17,7 @@ import java.util.List;
 
 import deakin.sit.planease.R;
 import deakin.sit.planease.dto.Goal;
-import deakin.sit.planease.dto.Task;
 import deakin.sit.planease.home.GoalListFragment;
-import deakin.sit.planease.home.TaskListFragment;
 
 public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
     List<Goal> goalList;
@@ -29,6 +28,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
         this.goalList = goalList;
         this.fragment = fragment;
         isEditable = false;
+        sortData();
     }
 
     @NonNull
@@ -51,13 +51,20 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
         holder.goalDeleteButton.setOnClickListener(view -> {
             fragment.deleteGoalFromServer(goal.getId());
         });
+        holder.markFinishButton.setOnClickListener(view -> {
+            if (fragment!=null) {
+                fragment.markTaskAsFinish(goal.getId());
+            }
+        });
 
         if (isEditable) {
             holder.goalEditButton.setVisibility(View.VISIBLE);
             holder.goalDeleteButton.setVisibility(View.VISIBLE);
+            holder.markFinishButton.setVisibility(View.GONE);
         } else {
             holder.goalEditButton.setVisibility(View.GONE);
             holder.goalDeleteButton.setVisibility(View.GONE);
+            holder.markFinishButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -68,7 +75,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
 
     public void updateGoalList(List<Goal> newGoalList) {
         this.goalList = newGoalList;
-        notifyDataSetChanged();
+        sortData();
     }
 
     public void setIsEditable(boolean isEditable) {
@@ -92,6 +99,8 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView goalDate, goalName;
         ImageButton goalEditButton, goalDeleteButton;
+        Button markFinishButton;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -100,6 +109,7 @@ public class GoalAdapter extends RecyclerView.Adapter<GoalAdapter.ViewHolder> {
 
             goalEditButton = itemView.findViewById(R.id.goalEditButton);
             goalDeleteButton = itemView.findViewById(R.id.goalDeleteButton);
+            markFinishButton = itemView.findViewById(R.id.markFinishButton);
         }
     }
 }

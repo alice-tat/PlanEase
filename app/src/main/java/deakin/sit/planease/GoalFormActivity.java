@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -37,20 +38,20 @@ import java.util.List;
 import deakin.sit.planease.dto.Goal;
 import deakin.sit.planease.dto.Task;
 import deakin.sit.planease.dto.User;
-import deakin.sit.planease.home.HomeActivity;
 import deakin.sit.planease.home.adapter.TaskAdapter;
 
 public class GoalFormActivity extends AppCompatActivity {
     private static final String TAG = "INFO:GoalFormActivity";
+
     EditText inputName, inputDate;
     Button cancelButton, saveGoalButton;
     RecyclerView taskListRecyclerView;
-
-    User currentUser;
-    Goal currentGoal;
+    LinearLayout taskSectionLayout;
 
     List<Task> currentTaskList;
     TaskAdapter taskAdapter;
+    User currentUser;
+    Goal currentGoal;
 
     ActivityResultLauncher<Intent> activityResultLauncher;
 
@@ -77,6 +78,8 @@ public class GoalFormActivity extends AppCompatActivity {
         cancelButton = findViewById(R.id.cancelButton);
         saveGoalButton = findViewById(R.id.saveGoalButton);
         taskListRecyclerView = findViewById(R.id.taskListRecyclerView);
+        taskSectionLayout = findViewById(R.id.taskSectionLayout);
+        fillCurrentGoalFields();
 
         // Config button
         cancelButton.setOnClickListener(this::handleCancelButton);
@@ -94,11 +97,7 @@ public class GoalFormActivity extends AppCompatActivity {
         );
     }
 
-    private void loadTaskAndRefresh(List<Task> newTaskList) {
-        currentTaskList = newTaskList;
-        taskAdapter.updateTaskList(currentTaskList);
-    }
-
+    // Operation handling
     private void handleCancelButton(View view) {
         Intent intent = new Intent().putExtra("Message", "Cancelled");
         setResult(RESULT_CANCELED, intent);
@@ -114,12 +113,6 @@ public class GoalFormActivity extends AppCompatActivity {
             return;
         }
         addGoalToServer(currentUser.getId(), name, date);
-    }
-
-    private void handleAddTaskButton(View view) {
-        Intent intent = new Intent(this, TaskFormActivity.class);
-        intent.putExtra("User", currentUser);
-        activityResultLauncher.launch(intent);
     }
 
     public void handleEditTaskButton (Task task) {
@@ -140,6 +133,23 @@ public class GoalFormActivity extends AppCompatActivity {
         inputDate.setText("");
     }
 
+    // Fill and load data
+    private void fillCurrentGoalFields() {
+        if (currentGoal==null) {
+            taskSectionLayout.setVisibility(View.GONE);
+            return;
+        }
+        taskSectionLayout.setVisibility(View.VISIBLE);
+        inputName.setText(currentGoal.getName());
+        inputDate.setText(currentGoal.getDate());
+    }
+
+    private void loadTaskAndRefresh(List<Task> newTaskList) {
+        currentTaskList = newTaskList;
+        taskAdapter.updateTaskList(currentTaskList);
+    }
+
+    // Backend interaction
     private void addGoalToServer(String userId, String name, String date) {
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -193,7 +203,7 @@ public class GoalFormActivity extends AppCompatActivity {
 
         // Prepare data
         int request_method = Request.Method.GET;
-        String url = Constant.BACKEND_URL + Constant.TASK_CRUD_ROUTE + "?user_id=" + currentUser.getId()  + "&finish=0" + "&goal_id=" + currentGoal.getId();
+        String url = Constant.BACKEND_URL + Constant.TASK_CRUD_ROUTE + "?user_id=" + currentUser.getId()  + "&finish=0" + "&goal_id=" + (currentGoal!=null ? currentGoal.getId() : "");
 
         // Send request
         JsonObjectRequest request = new JsonObjectRequest(request_method, url, null,
@@ -242,7 +252,6 @@ public class GoalFormActivity extends AppCompatActivity {
     }
 
     public void deleteTaskFromServer(String taskId) {
-
         RequestQueue queue = Volley.newRequestQueue(this);
 
         // Prepare data

@@ -18,7 +18,6 @@ import java.util.List;
 import deakin.sit.planease.GoalFormActivity;
 import deakin.sit.planease.R;
 import deakin.sit.planease.dto.Task;
-import deakin.sit.planease.home.HomeActivity;
 import deakin.sit.planease.home.TaskListFragment;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
@@ -32,6 +31,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         this.fragment = fragment;
         this.activity = null;
         isEditable = false;
+        sortData();
     }
 
     public TaskAdapter(List<Task> taskList, GoalFormActivity activity) {
@@ -71,6 +71,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 activity.deleteTaskFromServer(task.getId());
             }
         });
+        holder.markFinishButton.setOnClickListener(view -> {
+            if (fragment!=null) {
+                fragment.markTaskAsFinish(task.getId());
+            }
+        });
 
         if (isEditable) {
             holder.taskEditButton.setVisibility(View.VISIBLE);
@@ -90,7 +95,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     public void updateTaskList(List<Task> newTaskList) {
         this.taskList = newTaskList;
-        notifyDataSetChanged();
+        sortData();
     }
 
     public void setIsEditable(boolean isEditable) {

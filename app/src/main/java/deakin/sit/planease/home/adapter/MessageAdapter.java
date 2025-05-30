@@ -46,7 +46,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                 holder.generateTaskButton.setVisibility(View.VISIBLE);
                 holder.changeMessageButton.setVisibility(View.VISIBLE);
                 holder.changeMessageButton.setOnClickListener(view -> {
-                    fragment.changeMessage(message);
+                    // Get previous user message, not current AI-generated message
+                    fragment.changeMessage(messageList.get(position-1));
                 });
                 holder.generateTaskButton.setOnClickListener(view -> {
                     fragment.generateTaskBasedOnMessage(message);

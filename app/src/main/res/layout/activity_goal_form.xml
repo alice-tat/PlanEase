@@ -73,24 +73,30 @@
                 android:background="@drawable/style_rounded_edit_text"
                 tools:ignore="Autofill" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/taskSectionLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/subtitle_add_goal"
-                android:textSize="@dimen/h3_text_size"
-                android:textStyle="bold"
-                android:textColor="@color/primary_red"
-                android:layout_marginTop="@dimen/gap_medium"/>
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/subtitle_add_task"
+                    android:textSize="@dimen/h3_text_size"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_red"
+                    android:layout_marginTop="@dimen/gap_medium"/>
 
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginVertical="@dimen/gap_medium"/>
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginVertical="@dimen/gap_medium"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/taskListRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/taskListRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

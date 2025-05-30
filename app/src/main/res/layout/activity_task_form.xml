@@ -59,7 +59,9 @@
         android:id="@+id/selectGoalSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/gap_medium"
         android:background="@drawable/style_rounded_spinner"
+        android:popupBackground="@drawable/style_rounded_edit_text"
         android:spinnerMode="dropdown"/>
 
     <TextView
