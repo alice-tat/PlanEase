@@ -154,8 +154,8 @@ public class GoalFormActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
 
         // Prepare data
-        int request_method = Request.Method.POST;
-        String url = Constant.BACKEND_URL + Constant.GOAL_CRUD_ROUTE;
+        int request_method = currentGoal!=null ? Request.Method.PUT : Request.Method.POST;
+        String url = Constant.BACKEND_URL + Constant.GOAL_CRUD_ROUTE + (currentGoal!=null ? ("/" + currentGoal.getId()) : "");
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("user_id", userId);

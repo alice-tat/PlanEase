@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity {
     Button loginButton;
     TextView registerText;
 
-//    ActivityResultLauncher<Intent> activityResultLauncher;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,12 +55,6 @@ public class MainActivity extends AppCompatActivity {
         // Config view
         loginButton.setOnClickListener(this::handleLoginButton);
         registerText.setOnClickListener(this::handleRegisterButton);
-
-        // Config register launcher
-//        activityResultLauncher = registerForActivityResult(
-//                new ActivityResultContracts.StartActivityForResult(),
-//                this::handleResultFromActivity
-//        );
     }
 
     // Operation handling
@@ -93,16 +85,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("User", currentUser);
         startActivity(intent);
     }
-
-//    private void handleResultFromActivity(ActivityResult result) {
-//        String returnedMessage = "";
-//        if (result.getResultCode() == RESULT_OK) {
-//            returnedMessage = result.getData()!=null ? result.getData().getStringExtra("Message") : "Result OK";
-//        } else {
-//            returnedMessage = result.getData()!=null ? result.getData().getStringExtra("Message") : "Result Cancelled";
-//        }
-//        Toast.makeText(this, returnedMessage, Toast.LENGTH_SHORT).show();
-//    }
 
     // Backend interaction
     private void getUserFromServer(String email, String password) {
